@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
 -------------------------------------------------
-   File Name：     AshProduction __init__.py
+   File Name：     AshProduction find_jobs_list
    Description :
-   Author :       SamariaLin
-   date：          2018/9/8
+   Author :       LateautunmLin
+   date：          2018/9/9
 -------------------------------------------------
    Change Activity:
-                   2018/9/8:
+                   2018/9/9:
 -------------------------------------------------
 """
-__author__ = 'SamariaLin'
+__author__ = 'LateautunmLin'

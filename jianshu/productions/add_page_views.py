@@ -87,6 +87,9 @@ class JianshuPageView:
             await asyncio.sleep(random.randint(*self.random_sleep))
 
     async def run(self, *args, **kwargs) -> None:
+        """
+        add_page_view module common execute entry
+        """
         self.task_queue = Queue()
         userId = kwargs.get("userId", None)
         if not userId:
@@ -108,8 +111,3 @@ class JianshuPageView:
         ]
         await asyncio.gather(*tasks)
 
-
-if __name__ == "__main__":
-    d = JianshuPageView()
-    l = asyncio.get_event_loop()
-    l.run_until_complete(d.run(userId="e9fdf09df277"))
