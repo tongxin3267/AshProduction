@@ -119,4 +119,3 @@ class JianshuPageView:
             for _ in range(self.worker_num)
         ]
         await asyncio.gather(*tasks)
-

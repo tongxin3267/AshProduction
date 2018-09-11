@@ -20,4 +20,7 @@ from jianshu.production.add_page_views import JianshuPageView
 @pytest.mark.asyncio
 async def test_jianshu_add_page_views(event_loop) -> None:
     d = JianshuPageView()
+    # 测试输入用户ID
     await d.run(userId="e9fdf09df277")
+    # 测试输入文章ID
+    await d.run(articleId="4a526bc6276b")
