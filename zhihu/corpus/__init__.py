@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''
+------------------------------------------------------------
+File Name: __init__.py
+Description : 
+Project: corpus
+Last Modified: Monday, 17th September 2018 4:45:08 pm
+-------------------------------------------------------------
+'''
+
 from typing import Dict, List, Coroutine
 import asyncio
 from asyncio.locks import Lock

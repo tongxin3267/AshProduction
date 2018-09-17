@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''
+------------------------------------------------------------
+File Name: headers.py
+Description : 
+Project: corpus
+Last Modified: Monday, 17th September 2018 4:45:26 pm
+-------------------------------------------------------------
+'''
+
 lheaders = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0",
     "X-Requested-With": "XMLHttpRequest",
