@@ -31,7 +31,7 @@ class JianshuPageView:
         self.primary_page_num = 2
         self.max_page_num = 1000
         self.wait_frequency = 1
-        self.random_sleep = (3, 5)
+        self.random_sleep = (5, 20)
         self.worker_num = 10
 
     async def add_page_views(self, url_sub: str, session: Session) -> None:
