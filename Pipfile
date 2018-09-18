@@ -8,6 +8,7 @@ aiohttp = "*"
 aiodns = "*"
 cchardet = "*"
 parsel = "*"
+pytest-asyncio = "*"
 
 [dev-packages]
 

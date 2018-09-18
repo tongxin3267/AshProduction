@@ -17,7 +17,7 @@ import sys
 sys.path.append(str(Path(__file__).parent.parent.absolute()))
 from jianshu.productions.add_page_views import JianshuPageView
 @pytest.mark.asyncio
-async def test_jianshu_add_page_views() -> None:
+async def test_jianshu_add_page_views(event_loop) -> None:
     d = JianshuPageView()
     # 测试输入用户ID
     await d.run(userId="e9fdf09df277")
