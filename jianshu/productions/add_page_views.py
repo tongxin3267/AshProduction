@@ -103,7 +103,7 @@ class JianshuPageView:
         temp_page_article_lists = []
         full_article_lists = []
         if articleId:
-            full_article_lists = [articleId]
+            full_article_lists = [articleId] if isinstance(articleId,str) else articleId
         else:
             for page in range(self.primary_page_num, self.max_page_num):
                 current_page_article_lists = await self.get_user_article(

@@ -13,55 +13,34 @@
 __author__ = 'LateautunmLin'
 
 import asyncio
-import random
 from typing import List
 import aiohttp
-from parsel import Selector
-from asyncio.queues import Queue
 
 # type hint
 Session = aiohttp.ClientSession
-UserId = str
-Article_list = List[str]
 
 
-class JianshuPageView:
+
+class CSDNPageView:
     def __init__(self):
-        self.user_article_list_temp = f"https://www.jianshu.com/u/%s?order_by=shared_at&page=%s"
-        self.primary_page_num = 2
-        self.max_page_num = 1000
-        self.wait_frequency = 1
-        self.random_sleep = (5, 20)
-        self.worker_num = 10
+        self.personal_homepage_prefix = "https://blog.csdn.net/"
+        self.personal_homepage_part = "/article/list/"
 
-    async def add_page_views(self, url_sub: str, session: Session) -> None:
+    async def add_page_views(self, url: str, session: Session) -> None:
         """
         According to different articlesID structure request. 
         there are some optimization
         """
-        data = {
-            "uuid": "5e43e1c6-ca97-4787-a033asddasd",
-            "referrer": "https://www.jianshu.com"
-        }
         headers = {
-            "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0",
-            "X-CSRF-Token":
-            "+LOfEEblhHerUy77qZvhhWkwiUIYrirND0ofIfYesBLc0WUIhsHwFTTzmE+jprN8Yto50LE79knh3Ao8oq30vg==",
-            "Cookie":
-            "sensorsdata2015jssdkcross=%7B%22distinct_id%22%3A%22164f0ee834e42a-06c76e6f7944b38-4c312b7b-1327104-164f0ee834f2ab%22%2C%22%24device_id%22%3A%22164f0ee834e42a-06c76e6f7944b38-4c312b7b-1327104-164f0ee834f2ab%22%2C%22props%22%3A%7B%22%24latest_traffic_source_type%22%3A%22%E8%87%AA%E7%84%B6%E6%90%9C%E7%B4%A2%E6%B5%81%E9%87%8F%22%2C%22%24latest_referrer%22%3A%22https%3A%2F%2Fwww.baidu.com%2Flink%22%2C%22%24latest_referrer_host%22%3A%22www.baidu.com%22%2C%22%24latest_search_keyword%22%3A%22%E6%9C%AA%E5%8F%96%E5%88%B0%E5%80%BC%22%7D%2C%22first_id%22%3A%22%22%7D; read_mode=day; default_font=font2; locale=zh-CN; _m7e_session=920bfd266a5d73adf6bff486082f84e4; signin_redirect=https%3A%2F%2Fwww.jianshu.com%2Fp%2F4a526bc6276b",
-            "Host":
-            "www.jianshu.com",
-            "Referer":
-            f"https://www.jianshu.com/p/{url_sub}",
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0",
+            "Origin":"https://blog.csdn.net",
         }
-        url = f"https://www.jianshu.com/notes/{url_sub}/mark_viewed.json"
         try:
             await session.post(url, headers=headers, data=data)
         except Exception:
             # Todo
             pass
-
+            
     async def worker(self) -> None:
         """
         Loop to get ID and use post request. 
@@ -70,7 +49,7 @@ class JianshuPageView:
         while 1:
             try:
                 data = await self.task_queue.get()
-                await self.add_page_views(url_sub=data, session=session)
+                await self.add_page_views(url=data, session=session)
             except Exception as e:
                 print(e)
             await asyncio.sleep(delay=self.wait_frequency)
@@ -78,17 +57,17 @@ class JianshuPageView:
     async def get_user_article(self, userId: UserId,
                                page_number: int) -> Article_list:
         async with aiohttp.ClientSession() as session:
-            url = self.user_article_list_temp % (userId, page_number)
+            url = f"{self.personal_homepage_prefix}{userId}{self.personal_homepage_part}{page_number}"
             async with session.get(url=url) as response:
                 content = await response.text()
                 dom = Selector(text=content)
-                article_list = dom.xpath("//a[@class='title']/@href").getall()
+                article_list = dom.xpath("//h4[@class='']/a/@href").getall()
                 return article_list
 
     async def producer(self, article_list: Article_list) -> None:
         while 1:
-            for article_id in article_list:
-                await self.task_queue.put(article_id.split("/")[-1])
+            for article_url in article_list:
+                await self.task_queue.put(article_url)
             await asyncio.sleep(random.randint(*self.random_sleep))
 
     async def run(self, *args, **kwargs) -> None:
@@ -103,7 +82,7 @@ class JianshuPageView:
         temp_page_article_lists = []
         full_article_lists = []
         if articleId:
-            full_article_lists = [articleId]
+            full_article_lists = [articleId] if isinstance(articleId,str) else articleId
         else:
             for page in range(self.primary_page_num, self.max_page_num):
                 current_page_article_lists = await self.get_user_article(
