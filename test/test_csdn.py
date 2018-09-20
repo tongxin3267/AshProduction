@@ -20,6 +20,6 @@ from csdn.productions.add_page_views import CSDNPageView
 async def test_jianshu_add_page_views(event_loop) -> None:
     d = CSDNPageView()
     # 测试输入用户ID
-    await d.run(userId="red_stone1")
+    await d.run(userId="weixin_43116910")
     # 测试输入文章ID
     # await d.run(articleId="4a526bc6276b")

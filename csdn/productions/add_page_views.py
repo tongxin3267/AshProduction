@@ -13,18 +13,29 @@
 __author__ = 'LateautunmLin'
 
 import asyncio
+import random
+
 from typing import List
 import aiohttp
+from parsel import Selector
+from asyncio.queues import Queue
 
 # type hint
 Session = aiohttp.ClientSession
-
+UserId = str
+Article_list = List[str]
 
 
 class CSDNPageView:
     def __init__(self):
         self.personal_homepage_prefix = "https://blog.csdn.net/"
         self.personal_homepage_part = "/article/list/"
+        self.primary_page_num = 0
+        self.max_page_num = 1000
+        self.wait_frequency = 1
+        # 大概需要1分钟以上间隔对于同一IP来说
+        self.random_sleep = (80, 100)
+        self.worker_num = 1
 
     async def add_page_views(self, url: str, session: Session) -> None:
         """
@@ -32,15 +43,18 @@ class CSDNPageView:
         there are some optimization
         """
         headers = {
-            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0",
-            "Origin":"https://blog.csdn.net",
+            "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0",
+            "Origin":
+            "https://blog.csdn.net",
         }
         try:
-            await session.post(url, headers=headers, data=data)
+            print(url)
+            await session.get(url, headers=headers)
         except Exception:
             # Todo
             pass
-            
+
     async def worker(self) -> None:
         """
         Loop to get ID and use post request. 
@@ -79,18 +93,17 @@ class CSDNPageView:
         articleId = kwargs.get("articleId", None)
         if not userId and not articleId:
             raise Exception
-        temp_page_article_lists = []
         full_article_lists = []
         if articleId:
-            full_article_lists = [articleId] if isinstance(articleId,str) else articleId
+            full_article_lists = [articleId] if isinstance(articleId,
+                                                           str) else articleId
         else:
             for page in range(self.primary_page_num, self.max_page_num):
                 current_page_article_lists = await self.get_user_article(
                     userId=userId, page_number=page)
-                if current_page_article_lists == temp_page_article_lists:
+                if not current_page_article_lists:
                     break
                 else:
-                    temp_page_article_lists = current_page_article_lists
                     full_article_lists.extend(current_page_article_lists)
         asyncio.ensure_future(self.producer(article_list=full_article_lists))
         tasks = [
