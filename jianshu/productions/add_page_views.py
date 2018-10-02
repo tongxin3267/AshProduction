@@ -57,9 +57,14 @@ class JianshuPageView:
         }
         url = f"https://www.jianshu.com/notes/{url_sub}/mark_viewed.json"
         try:
-            await session.post(url, headers=headers, data=data)
+            response = await session.post(url, headers=headers, data=data)
+            code = response.status
         except Exception:
             # Todo
+            pass
+        else:
+            print(code)
+        finally:
             pass
 
     async def worker(self) -> None:
