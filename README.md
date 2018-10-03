@@ -30,4 +30,4 @@ pipenv run py.test -s test/test_jianshu.py
 ```
 see https://www.jianshu.com/u/e9fdf09df277
 ```
-(5) have fun （快乐欣赏） 
+(5) have fun （快乐欣赏） 1
