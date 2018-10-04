@@ -8,6 +8,8 @@ name = "pypi"
 [dev-packages]
 sanic = "*"
 sanic-session = "*"
+aiohttp = "*"
+parsel = "*"
 
 [requires]
 python_version = "3.6"
