@@ -22,9 +22,9 @@ git clone git@github.com:lateautunm/AshProduction.git
 ```
 pip install -u pipenv && pipenv install
 ```
-(3) choose a project to test (选择一个项目测试)
+(3) startup project (启动一个项目)
 ```
-pipenv run py.test -s test/test_jianshu.py
+cd productions/pageview/ && pipenv run python app.py
 ```
 (4) look result (看看结果))
 ```

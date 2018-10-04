@@ -10,7 +10,7 @@ websites = RouteTableDef()
 @websites.view('/websites')
 class WebsitesView(web.View):
     async def get(self):
-        return text('I am async get method')
+        return json_response()
 
     async def post(self):
         post_info = await self.request.json()
