@@ -1,0 +1,5 @@
+POST http://0.0.0.0:8000/websites
+
+{
+    "userid":"userid"
+}
