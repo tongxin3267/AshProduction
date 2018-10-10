@@ -12,11 +12,12 @@ async def jianshu_lst(pages: int, uid: str) -> List[str]:
             ) as response:
                 content = await response.text()
                 dom = Selector(text=content)
-                article_list = dom.xpath("//a[@class='title']/@href").getall()
+                article_list = dom.xpath("//ul[@class='note-list']//a[@class='title']/@href").getall()
                 article_list = [
-                    f"https://www.jianshu.com{i}" for i in article_list
+                    f"https://www.jianshu.com{i}" for i in article_list if "p" in i
                 ]
                 article_lists.extend(article_list)
+    article_lists = list(set(article_lists))
     return article_lists
 
 
@@ -30,7 +31,7 @@ async def csdn_lst(pages: int, uid: str) -> List[str]:
                 content = await response.text()
                 dom = Selector(text=content)
                 article_list = dom.xpath("//h4[@class='']/a/@href").getall()
-                article_list = [i for i in article_list]
+                article_list = list(set([i for i in article_list if uid in i]))
                 article_lists.extend(article_list)
     return article_lists
 
@@ -83,6 +84,6 @@ async def jianshu_add_page_view(session: ClientSession, url: str):
         # Todo
         pass
     else:
-        print(code)
+        pass
     finally:
         pass
