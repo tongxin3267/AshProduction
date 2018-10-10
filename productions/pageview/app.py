@@ -34,7 +34,7 @@ async def run(app):
     config_static(app)
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, 'localhost', 8000)
+    site = web.TCPSite(runner, '0.0.0.0', 8000)
     await site.start()
 
 
