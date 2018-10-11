@@ -20,7 +20,7 @@ git clone git@github.com:lateautunm/AshProduction.git
 ``` 
 (2) install enviroment (安装环境)
 ```
-pip install -u pipenv && pipenv install
+pip install -u pipenv && pipenv install --dev
 ```
 (3) startup project (启动一个项目)
 ```

@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''
+------------------------------------------------------------
+File Name: app.py
+Description : 
+Project: pageview
+Last Modified: Thursday, 11th October 2018 1:35:35 pm
+-------------------------------------------------------------
+'''
+
 import asyncio
 from collections import defaultdict
 from pprint import pprint
@@ -26,8 +36,14 @@ async def run(app):
 
         app.on_startup.append(_add_page_view)
 
+        async def _auto_discovery_new(app):
+            from backend_tasks.auto_discovery_new import auto_discovery_new
+            app.loop.create_task(auto_discovery_new(app))
+
+        app.on_startup.append(_auto_discovery_new)
+
     def config_static(app):
-        app["websites"] = defaultdict(list)
+        app["websites"] = defaultdict(dict)
 
     config_routes(app)
     config_tasks(app)

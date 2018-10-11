@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''
+------------------------------------------------------------
+File Name: websites.py
+Description : 
+Project: api
+Last Modified: Thursday, 11th October 2018 1:34:28 pm
+-------------------------------------------------------------
+'''
+
 from collections import defaultdict
 from typing import List
 from aiohttp import web
@@ -19,13 +29,10 @@ class WebsitesView(web.View):
         if not all([website, userid]):
             return json_response({"error": 1})
         if not self.request.app["websites"]:
-            self.request.app["websites"] = defaultdict(list)
+            self.request.app["websites"] = defaultdict(dict)
         websites_store = self.request.app["websites"]
         articles = await self.get_articles(website=website, uid=userid)
-        websites_store[website].append({
-            "userid": userid,
-            "articles": articles
-        })
+        websites_store[website][userid] = articles
         return json_response({"session": self.request.app["websites"]})
 
     async def get_articles(self, website: str, uid: str) -> List[str]:

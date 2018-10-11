@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+'''
+------------------------------------------------------------
+File Name: add_page_view.py
+Description : 
+Project: backend_tasks
+Last Modified: Thursday, 11th October 2018 1:34:58 pm
+-------------------------------------------------------------
+'''
+
 import asyncio
 from aiohttp.web import Application
 from aiohttp import ClientSession
@@ -32,6 +42,6 @@ async def add_page_view(app: Application) -> None:
 
 async def execute(interval: int, website_values: dict, handle: object) -> None:
     for website_value in website_values:
-        for i in website_value["articles"]:
+        for i in website_value:
             await asyncio.sleep(interval)
             await handle(session=session, url=i)

@@ -1,10 +1,22 @@
+# -*- coding: utf-8 -*-
+'''
+------------------------------------------------------------
+File Name: __init__.py
+Description : 
+Project: handles
+Last Modified: Thursday, 11th October 2018 1:35:13 pm
+-------------------------------------------------------------
+'''
+
 from typing import List
 from aiohttp import ClientSession
 from parsel import Selector
+from pprint import pprint
 
 
 async def jianshu_lst(pages: int, uid: str) -> List[str]:
     article_lists = []
+    temp_article_list = []
     async with ClientSession() as session:
         for page in range(pages):
             async with session.get(
@@ -12,10 +24,16 @@ async def jianshu_lst(pages: int, uid: str) -> List[str]:
             ) as response:
                 content = await response.text()
                 dom = Selector(text=content)
-                article_list = dom.xpath("//ul[@class='note-list']//a[@class='title']/@href").getall()
+                article_list = dom.xpath(
+                    "//ul[@class='note-list']//a[@class='title']/@href").getall()
                 article_list = [
                     f"https://www.jianshu.com{i}" for i in article_list if "p" in i
                 ]
+                if article_list == temp_article_list:
+                    break
+                else:
+                    temp_article_list = article_list
+                # pprint(article_list)
                 article_lists.extend(article_list)
     article_lists = list(set(article_lists))
     return article_lists
