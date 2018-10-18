@@ -111,7 +111,7 @@ def run(userid, interval):
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
     finally:
         _loop = asyncio.get_event_loop()
-        _loop.run_until_complete(flow(userid=userid,interval=interval))
+        _loop.run_until_complete(flow(userId=userid,interval=interval))
 
 
 run()
