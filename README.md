@@ -24,10 +24,20 @@ pip install -u pipenv && pipenv install --dev
 ```
 (3) startup project (启动一个项目)
 ```
-cd productions/pageview/ && pipenv run python app.py
+pipenv run python jianshu/add_pageview.py --userid=e9fdf09df277
+
+pipenv run python csdn/add_pageview.py --userid=maliao1123
+
+pipenv run python csdn/add_pageview.py --help
+
+Usage: add_pageview.py [OPTIONS]
+
+Options:
+  --userid TEXT  your jianshu homepageId
+  --help         Show this message and exit.
 ```
 (4) look result (看看结果))
 ```
 see https://www.jianshu.com/u/e9fdf09df277
 ```
-(5) have fun （快乐欣赏） 1
+(5) have fun （快乐欣赏)
