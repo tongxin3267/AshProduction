@@ -72,7 +72,7 @@ async def add_action(session: ClientSession, url: str) -> None:
         pass
 
 
-async def flow(userId: str):
+async def flow(userId: str, interval: int):
     task_q = Queue()
     session = ClientSession()
     asyncio.ensure_future(put_seeds(q=task_q, userId=userId))
@@ -86,7 +86,7 @@ async def flow(userId: str):
             await add_action(session=session, url=seed)
             await task_q.put(seed)
         finally:
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(interval)
 
 
 async def put_seeds(q: Queue, userId: str):
@@ -100,7 +100,9 @@ async def put_seeds(q: Queue, userId: str):
 @click.command()
 @click.option(
     '--userid', default="e9fdf09df277", help='your jianshu homepageId')
-def run(userid):
+@click.option(
+    '--interval', default=5, help='your interval')
+def run(userid, interval):
     try:
         import uvloop
     except ImportError as e:
@@ -109,7 +111,7 @@ def run(userid):
         asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
     finally:
         _loop = asyncio.get_event_loop()
-        _loop.run_until_complete(flow(userid))
+        _loop.run_until_complete(flow(userid=userid,interval=interval))
 
 
 run()
