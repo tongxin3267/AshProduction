@@ -4,7 +4,7 @@
 
 1. [刷阅读量（已实现）](https://github.com/lateautunm/AshProduction/blob/master/jianshu/add_pageview.py) 
 
-2. 简书批量注册账号（未实现）
+2. [简书批量注册账号（已实现）](https://github.com/lateautunm/AshProduction/blob/master/jianshu/auto_register.py)
 ### 2.招聘
 ### 3.知乎
 
